@@ -13,7 +13,7 @@ COMPRESSED  ?= NO
 ICON        ?= icon.png
 DESCRIPTION ?= "Time Pilot v1"
 
-L ?= fileioc graphx
+L ?= fileioc keypadc graphx
 
 # ----------------------------
 # Specify source and output locations
