@@ -1,0 +1,7 @@
+bin/
+obj/
+*.o
+*.obj
+*.log
+src/gfx/*.c
+src/gfx/*.h
