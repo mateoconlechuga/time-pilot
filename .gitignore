@@ -5,3 +5,5 @@ obj/
 *.log
 src/gfx/*.c
 src/gfx/*.h
+src/gfx/*.png
+
