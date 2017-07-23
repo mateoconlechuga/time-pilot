@@ -56,11 +56,10 @@ void update_screen(void) {
     }
     
     gfx_SetColor(bullet_color_index);
-    for (i = 0; (i < mplayer.num_bullet) && i < 8; i++) {
+    for (i = 0; i < 8; i++) {
         b = &mplayer.bullets[i];
         gfx_FillRectangle(b->x, b->y, 3, 3);
-        update_global(b);
-        update_local(b);
+        update_glocal(b);
     }
     
     // draw the player
