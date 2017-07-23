@@ -1,6 +1,8 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 
+#include "main.h"
+
 #include <stdint.h>
 
 typedef struct {
@@ -12,6 +14,8 @@ typedef struct {
 
 extern int8_t rdx[];
 extern int8_t rdy[];
+
+extern spawn_region_t spawn_regions[];
 
 #define update_global(p) \
     do { p->y -= mplayer.dy; p->x -= mplayer.dx; } while (0)

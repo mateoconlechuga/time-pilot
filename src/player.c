@@ -30,6 +30,23 @@ void update_player(void) {
         index &= 15;
         mplayer.dx = rdx[index];
         mplayer.dy = rdy[index];
+        
+        switch (index) {
+            case 0:
+                mregion = &spawn_regions[0];
+                break;
+            case 4:
+                mregion = &spawn_regions[1];
+                break;
+            case 8:
+                mregion = &spawn_regions[2];
+                break;
+            case 12:
+                mregion = &spawn_regions[3];
+                break;
+            default:
+                break;
+        }
     }
     
     if (mplayer.firing) {

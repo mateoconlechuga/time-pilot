@@ -16,6 +16,7 @@
 #include <fileioc.h>
 #include <keypadc.h>
 
+spawn_region_t *mregion;
 game_t mgame;
 level_t mlevel;
 

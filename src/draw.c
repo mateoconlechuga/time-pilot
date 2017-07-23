@@ -11,6 +11,7 @@
 #include <graphx.h>
 
 void update_screen(void) {
+    int x, y;
     uint8_t i;
     uint8_t *d;
     prop_t *p;
@@ -18,14 +19,14 @@ void update_screen(void) {
     bool update_prop2 = false;
     bool update_prop3 = false;
     
-    if (props.ctr2 == 2) {
+    if (prop_ctr2 == 2) {
         update_prop2 = true;
-        props.ctr2 = 0;
+        prop_ctr2 = 0;
     }
     
-    if (props.ctr3 == 3) {
+    if (prop_ctr3 == 3) {
         update_prop3 = true;
-        props.ctr3 = 0;
+        prop_ctr3 = 0;
     }
     
     // clear the screen
@@ -33,26 +34,15 @@ void update_screen(void) {
     gfx_FillRectangle(0, 0, 240, 240);
     
     // draw the props
-    for (i = 0; i < props.num3; i++) {
-        p = &props.depth3[i];
-        gfx_RLETSprite(props.sprite3, p->x, p->y);
-        if (update_prop3) {
+    for (i = 0; i < PROP_AMT; i++) {
+        p = &props[i];
+        gfx_RLETSprite(p->sprite, x = p->x, y = p->y);
+        if ((p->depth == 3 && update_prop3) || (p->depth == 2 && update_prop2) || (p->depth == 1)) {
             update_global(p);
         }
-    }
-    
-    for (i = 0; i < props.num2; i++) {
-        p = &props.depth2[i];
-        gfx_RLETSprite(props.sprite2, p->x, p->y);
-        if (update_prop2) {
-            update_global(p);
+        if (x > 265 || y > 265 || x < -60 || y < -25) {
+            update_prop(p);
         }
-    }
-    
-    for (i = 0; i < props.num1; i++) {
-        p = &props.depth1[i];
-        gfx_RLETSprite(props.sprite1, p->x, p->y);
-        update_global(p);
     }
     
     gfx_SetColor(bullet_color_index);

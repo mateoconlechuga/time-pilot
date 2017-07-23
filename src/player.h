@@ -20,12 +20,6 @@ typedef struct {
     bullet_t bullets[MAX_PLAYER_BULLETS+1];
     int8_t dir;
     
-    // this controls where new things will spawn
-    int spawn_x_min;
-    int spawn_x_len;
-    int spawn_y_min;
-    int spawn_y_len;
-    
     uint8_t index;
     gfx_rletsprite_t *sprite;
 } player_t;

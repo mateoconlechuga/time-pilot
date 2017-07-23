@@ -1,5 +1,7 @@
 #include "props.h"
 #include "images.h"
+#include "helpers.h"
+#include "main.h"
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -7,49 +9,50 @@
 
 #include <tice.h>
 
-props_t props;
-
 void init_props(void) {
     uint8_t i;
     
-    props.sprite1 = cloud_sprite[2];
-    props.sprite2 = cloud_sprite[1];
-    props.sprite3 = cloud_sprite[0];
+    mregion = &spawn_regions[4];
     
-    for (i = 0; i < PROP_MAX_AMT * 2; i++) {
-        add_prop();
+    for (i = 0; i < PROP_AMT; i++) {
+        update_prop(&props[i]);
     }
 }
 
+prop_t props[PROP_AMT];
+uint8_t num_props;
+uint8_t prop_ctr2;
+uint8_t prop_ctr3;
 
-void add_prop(void) {
+void update_prop(prop_t *p) {
     uint8_t depth = randInt(1, 3);
-    prop_t *prop;
-    uint8_t *num;
+    uint8_t use_dir = (uint8_t)rand();
+    spawn_region_t *s;
     
     switch (depth) {
         case 1:
-            num = &props.num1;
-            prop = &props.depth1[*num];
+            p->sprite = cloud_sprite[2];
             break;
         case 2:
-            num = &props.num2;
-            prop = &props.depth2[*num];
+            p->sprite = cloud_sprite[1];
             break;
         default:
-            num = &props.num3;
-            prop = &props.depth3[*num];
+            p->sprite = cloud_sprite[0];
             break;
     }
     
-    if (*num < PROP_MAX_AMT) {
-        prop->x = randInt(0, 240);
-        prop->y = randInt(0, 240);
-        *num += 1;
+    p->depth = depth;
+    if (use_dir & 1) {
+        s = mregion;
+    } else {
+        s = &spawn_regions[use_dir & 3];
     }
+    p->x = randInt(s->xmin, s->xmax);
+    p->y = randInt(s->ymin, s->ymax);
+    num_props += 1;
 }
 
 void update_props(void) {
-    props.ctr2++;
-    props.ctr3++;
+    prop_ctr2++;
+    prop_ctr3++;
 }

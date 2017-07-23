@@ -16,6 +16,14 @@
 #define bullet_color_index 96
 
 typedef struct {
+    // this controls where new things will spawn
+    int xmin;
+    int xmax;
+    int ymin;
+    int ymax;
+} spawn_region_t;
+
+typedef struct {
     bool done;
     uint8_t num_enemy_sprites;
     uint8_t num_boss_sprites;
@@ -25,6 +33,7 @@ typedef struct {
     uint8_t level;
 } game_t;
 
+extern spawn_region_t *mregion;
 extern game_t mgame;
 extern level_t mlevel;
 
