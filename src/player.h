@@ -25,11 +25,17 @@ typedef struct {
     uint8_t index;
     gfx_rletsprite_t *sprite;
     
-    uint24_t score;
+    unsigned int score;
+    bool failed;
+    bool done;
+    
+    unsigned int parachute_chain;
 } player_t;
 
 extern player_t mplayer;
 
 void update_player(void);
+void update_scores(unsigned int score);
+void update_progress(void);
 
 #endif

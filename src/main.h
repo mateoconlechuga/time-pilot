@@ -26,17 +26,21 @@ typedef struct {
 
 typedef struct {
     bool done;
+    bool boss_active;
+    uint8_t progress;
     uint8_t num_enemy_sprites;
     uint8_t num_boss_sprites;
 } level_t;
 
 typedef struct {
     uint8_t level;
-    uint24_t high;
+    unsigned int high;
 } game_t;
 
 extern spawn_region_t *mregion;
 extern game_t mgame;
 extern level_t mlevel;
+
+void exit_game(void);
 
 #endif

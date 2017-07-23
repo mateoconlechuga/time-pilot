@@ -14,12 +14,26 @@ typedef struct {
 #define PROP_AMT 16
 
 extern prop_t props[PROP_AMT];
-extern uint8_t num_props;
 extern uint8_t prop_ctr2;
 extern uint8_t prop_ctr3;
 
 void init_props(void);
 void update_prop(prop_t *p);
 void update_props(void);
+
+typedef struct {
+    int x;
+    int y;
+} parachute_t;
+
+#define PARACHUTE_AMT 2
+
+extern parachute_t parachutes[PARACHUTE_AMT];
+extern gfx_rletsprite_t *parachute_sprite_current;
+extern uint8_t parachute_ctr;
+extern uint8_t parachute_index;
+
+void update_parachute(parachute_t *p);
+void update_parachutes(void);
 
 #endif

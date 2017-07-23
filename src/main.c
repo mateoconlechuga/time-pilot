@@ -1,13 +1,13 @@
 #include "main.h"
 #include "draw.h"
 #include "props.h"
+#include "enemy.h"
 #include "images.h"
 #include "player.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #include <tice.h>
 #include <intce.h>
@@ -75,7 +75,13 @@ void main(void) {
     mgame.level = 1;
     mgame.high = 10000;
     
+    mlevel.progress = 0;
+    mlevel.boss_active = false;
+    
     mplayer.lives = 4;
+    mplayer.done = false;
+    mplayer.failed = false;
+    mplayer.parachute_chain = 0;
     
     // start the graphics
     gfx_Begin();
@@ -90,16 +96,11 @@ void main(void) {
     gfx_PrintStringXY("1-UP", 320 - 56, 32);
     gfx_SetTextFGColor(white_color_index);
     gfx_SetTextBGColor(black_color_index);
-    gfx_SetTextTransparentColor(black_color_index);
-    len = log10(mgame.high) + 1;
-    gfx_SetTextXY(303 - len * 8, 9);
-    gfx_PrintUInt(mgame.high, len);
-    len = log10(mplayer.score) + 1;
-    gfx_SetTextXY(303 - len * 8, 41);
-    gfx_PrintUInt(mplayer.score, len);
+    gfx_SetTextTransparentColor(0);
     gfx_SetColor(white_color_index);
-    gfx_Rectangle(240 + 11, 190, 58, 3);
+    gfx_Rectangle_NoClip(240 + 11, 190, 58, 3);
     gfx_PrintStringXY("LEVEL ", 320 - 68, 200);
+    gfx_PrintUInt(mgame.level, 1);
     i = mplayer.lives;
     x = 320 - 74;
     y = 110;
@@ -111,8 +112,8 @@ void main(void) {
             x = 320 - 74;
         }
     }
-    gfx_PrintUInt(mgame.level, 1);
-    gfx_SetDrawBuffer();
+    update_scores(0);
+    gfx_SetClipRegion(0, 0, 240, 240);
     
     // setup interrupts
     int_Initialize();
@@ -129,10 +130,12 @@ void main(void) {
     int_Enable();
     
     init_props();
+    init_enemies();
     
     do {
         update_player();
         update_props();
+        update_parachutes();
         update_screen();
     } while (!mlevel.done);
     

@@ -93,7 +93,7 @@ const void *parachute_sprite_data[5] = {
     parachute_4_compressed,
 };
 gfx_rletsprite_t **parachute_sprite = parachute_sprite_data;
-#define parachute_sprite_size (parachute_1_width*parachute_1_height)
+#define parachute_sprite_size ((parachute_1_width+1)*parachute_1_height)
 
 // ---------------------------------------------------
 
