@@ -14,6 +14,7 @@
 #define black_color_index  98
 #define bg_color_index     97
 #define bullet_color_index 96
+#define red_color_index    95
 
 typedef struct {
     // this controls where new things will spawn
@@ -31,6 +32,7 @@ typedef struct {
 
 typedef struct {
     uint8_t level;
+    uint24_t high;
 } game_t;
 
 extern spawn_region_t *mregion;

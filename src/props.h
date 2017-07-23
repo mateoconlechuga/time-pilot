@@ -11,7 +11,7 @@ typedef struct {
     uint8_t depth;
 } prop_t;
 
-#define PROP_AMT 18
+#define PROP_AMT 16
 
 extern prop_t props[PROP_AMT];
 extern uint8_t num_props;

@@ -11,9 +11,6 @@
 player_t mplayer;
 
 static void fire_bullet(void) {
-    const uint8_t pdx[] = { 8, 13, 16, 16, 16, 16, 13, 9,  8,  0,  0,  0,  0,  0,  0,  6 };
-    const uint8_t pdy[] = { 0,  0,  2,  6,  8, 14, 16, 16, 16, 16, 14, 9,  8,  4,  0,  0 };
-    
     bullet_t *b = &mplayer.bullets[mplayer.num_bullet & MAX_PLAYER_BULLETS];
     b->dx = mplayer.dx * 2;
     b->dy = mplayer.dy * 2;
@@ -52,7 +49,7 @@ void update_player(void) {
     if (mplayer.firing) {
         if (mplayer.ctr_bullet == 0) {
             fire_bullet();
-            mplayer.ctr_bullet = 10;
+            mplayer.ctr_bullet = 9;
         } else {
             mplayer.ctr_bullet--;
         }

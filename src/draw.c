@@ -53,7 +53,7 @@ void update_screen(void) {
     }
     
     // draw the player
-    gfx_RLETSprite(mplayer.sprite, PLAYER_X_POS, PLAYER_Y_POS);
+    gfx_RLETSprite_NoClip(mplayer.sprite, PLAYER_X_POS, PLAYER_Y_POS);
     
     // copy to the screen
     gfx_BlitRectangle(gfx_buffer, 0, 0, 240, 240);

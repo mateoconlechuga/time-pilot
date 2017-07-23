@@ -20,8 +20,12 @@ typedef struct {
     bullet_t bullets[MAX_PLAYER_BULLETS+1];
     int8_t dir;
     
+    uint8_t lives;
+    
     uint8_t index;
     gfx_rletsprite_t *sprite;
+    
+    uint24_t score;
 } player_t;
 
 extern player_t mplayer;

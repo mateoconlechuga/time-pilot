@@ -12,10 +12,13 @@ typedef struct {
     int dy;
 } bullet_t;
 
-extern int8_t rdx[];
-extern int8_t rdy[];
+extern const int8_t rdx[];
+extern const int8_t rdy[];
+extern const uint8_t pdx[];
+extern const uint8_t pdy[];
+extern const uint8_t font[];
 
-extern spawn_region_t spawn_regions[];
+extern const spawn_region_t spawn_regions[];
 
 #define update_global(p) \
     do { p->y -= mplayer.dy; p->x -= mplayer.dx; } while (0)
