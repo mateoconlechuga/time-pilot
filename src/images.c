@@ -26,8 +26,8 @@ const unsigned int cloud_sizes[4] = {
 const void *cloud_sprite_data[4] = {
     NULL,
     cloud_1_compressed,
-    cloud_1_compressed,
     cloud_2_compressed,
+    cloud_3_compressed,
 };
 gfx_rletsprite_t **cloud_sprite = cloud_sprite_data;
 
