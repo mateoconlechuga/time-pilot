@@ -78,10 +78,7 @@ void main(void) {
     mlevel.progress = 0;
     mlevel.boss_active = false;
     
-    mplayer.lives = 4;
-    mplayer.done = false;
-    mplayer.failed = false;
-    mplayer.parachute_chain = 0;
+    init_player();
     
     // start the graphics
     gfx_Begin();

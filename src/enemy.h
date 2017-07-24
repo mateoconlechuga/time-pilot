@@ -15,12 +15,19 @@ typedef struct {
     int hit_ylen;
     gfx_rletsprite_t *sprite;
     uint8_t destroy_index;
+    
+    uint8_t dir;
+    bool smart;
+    uint8_t index;
+    uint8_t turn;
+    
+    uint8_t ctr;
+    uint8_t reload;
 } enemy_t;
 
-#define ENEMY_AMT 20
+#define ENEMY_AMT 10
 
 extern enemy_t enemy[ENEMY_AMT];
-extern uint8_t num_enemies;
 
 void init_enemies(void);
 void update_enemy(enemy_t *e);

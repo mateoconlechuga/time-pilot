@@ -16,7 +16,7 @@
     gfx_CheckRectangleHotspot(x, y, w, h, x1, y1, w1, h1)
 
 #define chk_collision_player(x, y, w, h) \
-    (!mplayer.done && chk_collision(x, y, w, h, PLAYER_X_POS + 3, PLAYER_Y_POS + 3, 10, 10))
+    (!mplayer.done && chk_collision(x, y, w, h, PLAYER_POS + 3, PLAYER_POS + 3, 10, 10))
 
 void update_screen(void) {
     int x, y;
@@ -60,7 +60,7 @@ void update_screen(void) {
     // draw the enemies
     for (i = 0; i < ENEMY_AMT; i++) {
         e = &enemy[i];
-        destroy = e->destroy_index == 12;
+        destroy = e->destroy_index == 16;
         gfx_RLETSprite(e->sprite, x = e->x, y = e->y);
         
         if (e->destroy_index) {
@@ -68,13 +68,19 @@ void update_screen(void) {
             e->destroy_index++;
         } else {
             
-            e->y += -1;
+            if (e->ctr != 10) {
+                e->x += e->dx;
+                e->y += e->dy;
+                e->ctr++;
+            } else {
+                e->ctr = e->reload;
+            }
             
             for (j = 0; j < 8; j++) {
                 b = &mplayer.bullets[j];
                 if (chk_collision(x + 2, y + 2, 12, 12, b->x, b->y, 3, 3)) {
                     e->destroy_index = 1;
-                    b->y = 60000;
+                    b->y = 0xfffff;
                     b->dx = 0;
                     b->dy = 0;
                     update_scores(100);
@@ -82,7 +88,43 @@ void update_screen(void) {
                     break;
                 }
             }
-            if (chk_collision_player(x + 2, y + 2, 12, 12)) {
+            
+            // do a bunch of checks to determine the next heading
+            // only do this if the enemy is smart
+            if (e->smart && (e->turn ^= 1)) {
+                
+                // if we enter a region around the player, attempt to guide them
+                if (chk_collision(PLAYER_POS - 60, PLAYER_POS - 60, 136, 136, x, y, 16, 16)) {
+                    uint8_t index = e->index;
+                    bool testx = rand() & 1;
+                    
+                    const uint8_t nyg[] = {  0,  0,  1,  2,  3,  4,  5,  6,  9, 10, 11, 12, 13, 14, 15,  0 };
+                    const uint8_t nyl[] = {  1,  2,  3,  4,  5,  6,  7,  8,  8,  8,  9, 10, 11, 12, 13, 14 };
+                    const uint8_t nxg[] = { 15,  0,  2,  3,  3,  6,  7,  8,  7, 10, 11, 13, 12, 12, 15, 14 };
+                    const uint8_t nxl[] = {  1,  2,  3,  4,  4,  4,  5,  6,  7,  8,  9, 12, 13, 14, 15,  0 };
+                    
+                    if (!testx) {
+                        if (y >= PLAYER_POS) {
+                            index = nyg[index];
+                        } else {
+                            index = nyl[index];
+                        }
+                    } else {
+                        if (x >= PLAYER_POS) {
+                            index = nxg[index];
+                        } else {
+                            index = nxl[index];
+                        }
+                    }
+                    
+                    e->dx = rdx[index];
+                    e->dy = rdy[index];
+                    e->index = index;
+                    e->sprite = enemy_sprite[index];
+                }
+            }
+            
+            if (0 && chk_collision_player(x + 2, y + 2, 12, 12)) {
                 mplayer.failed = true;
                 mplayer.index = 0;
                 e->destroy_index = 1;
@@ -111,16 +153,16 @@ void update_screen(void) {
         }
     }
     
-    gfx_SetColor(bullet_color_index);
+    gfx_SetColor(white_color_index);
     for (i = 0; i < 8; i++) {
         b = &mplayer.bullets[i];
-        gfx_FillRectangle(b->x, b->y, 3, 3);
+        gfx_FillRectangle(b->x, b->y, 2, 2);
         update_glocal(b);
     }
     
     // draw the player
     if (!mplayer.done) {
-        gfx_RLETSprite_NoClip(mplayer.sprite, PLAYER_X_POS, PLAYER_Y_POS);
+        gfx_RLETSprite_NoClip(mplayer.sprite, PLAYER_POS, PLAYER_POS);
     }
     
     // copy to the screen

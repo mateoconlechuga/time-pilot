@@ -11,6 +11,8 @@
 typedef struct {
     int8_t dx;
     int8_t dy;
+    int8_t dx_save;
+    int8_t dy_save;
     int8_t velocity;
     
     // bullet stuff
@@ -30,10 +32,18 @@ typedef struct {
     bool done;
     
     unsigned int parachute_chain;
+    
+    // used for controlling velocity
+    uint8_t ctr;
+    uint8_t reload;
+    
+    // used for controlling rotation speed
+    uint8_t rotate;
 } player_t;
 
 extern player_t mplayer;
 
+void init_player(void);
 void update_player(void);
 void update_scores(unsigned int score);
 void update_progress(void);

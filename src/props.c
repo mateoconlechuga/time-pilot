@@ -70,7 +70,7 @@ void update_parachute(parachute_t *p) {
     if (use_dir & 1) {
         s = mregion;
     } else {
-        s = &spawn_regions[use_dir & 3];
+        s = &spawn_regions[0];
     }
     p->x = randInt(s->xmin, s->xmax);
     p->y = randInt(s->ymin, s->ymax);

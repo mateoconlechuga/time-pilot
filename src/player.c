@@ -14,11 +14,23 @@ player_t mplayer;
 
 static void fire_bullet(void) {
     bullet_t *b = &mplayer.bullets[mplayer.num_bullet & MAX_PLAYER_BULLETS];
-    b->dx = mplayer.dx * 2;
-    b->dy = mplayer.dy * 2;
-    b->x = PLAYER_X_POS + pdx[mplayer.index];
-    b->y = PLAYER_Y_POS + pdy[mplayer.index];
+    b->dx = mplayer.dx_save * 2;
+    b->dy = mplayer.dy_save * 2;
+    b->x = PLAYER_POS + pdx[mplayer.index];
+    b->y = PLAYER_POS + pdy[mplayer.index];
     mplayer.num_bullet++;
+}
+
+void init_player(void) {
+    mplayer.lives = 4;
+    mplayer.done = false;
+    mplayer.failed = false;
+    mplayer.parachute_chain = 0;
+    mplayer.index = 4;
+    mplayer.sprite = player_sprite[4];
+    mplayer.ctr = 9;
+    mplayer.reload = 7;
+    mregion = &spawn_regions[1];
 }
 
 void update_player(void) {
@@ -32,6 +44,23 @@ void update_player(void) {
         return;
     } else
     
+    if (mplayer.dx || mplayer.dy) {
+        mplayer.dx_save = mplayer.dx;
+        mplayer.dy_save = mplayer.dy;
+    }
+    
+    if (mplayer.ctr != 10) {
+        if (mplayer.ctr == mplayer.reload) {
+            mplayer.dx = mplayer.dx_save;
+            mplayer.dy = mplayer.dy_save;
+        }
+        mplayer.ctr++;
+    } else {
+        mplayer.dx = 0;
+        mplayer.dy = 0;
+        mplayer.ctr = mplayer.reload;
+    }
+
     if (mplayer.failed) {
         if (index == 4 * 4) {
             mplayer.done = true;
@@ -42,8 +71,8 @@ void update_player(void) {
         }
         return;
     }
-    
-    if (mplayer.dir) {
+
+    if (mplayer.dir && (mplayer.rotate ^= 1)) {
         index += mplayer.dir;
         index &= 15;
         mplayer.dx = rdx[index];

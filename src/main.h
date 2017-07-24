@@ -4,8 +4,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define PLAYER_X_POS        (240 / 2 - 4)
-#define PLAYER_Y_POS        (240 / 2 - 4)
+#define PLAYER_POS    (240 / 2 - 4)
+#define PLAYER_CENTER ((240 / 2 - 4) + 8)
 
 #define MAX_RADIUS          400
 #define MAX_RADIUS_SQUARED  (MAX_RADIUS * MAX_RADIUS)
