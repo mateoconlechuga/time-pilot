@@ -63,17 +63,14 @@ uint8_t parachute_index;
 bool parachute_left;
 
 void update_parachute(parachute_t *p) {
-    uint8_t use_dir = (uint8_t)rand();
+    bool spawn = (rand() & 1023) == 0;
     
-    spawn_region_t *s;
-    
-    if (use_dir & 1) {
-        s = mregion;
-    } else {
-        s = &spawn_regions[0];
+    if (spawn) {
+        spawn_region_t *s = &spawn_regions[0];
+
+        p->x = randInt(s->xmin, s->xmax);
+        p->y = randInt(s->ymin, s->ymax);
     }
-    p->x = randInt(s->xmin, s->xmax);
-    p->y = randInt(s->ymin, s->ymax);
 }
 
 void update_props(void) {

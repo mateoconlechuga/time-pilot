@@ -25,7 +25,7 @@ typedef struct {
     uint8_t reload;
 } enemy_t;
 
-#define ENEMY_AMT 10
+#define ENEMY_AMT 8
 
 extern enemy_t enemy[ENEMY_AMT];
 

@@ -94,7 +94,8 @@ void update_screen(void) {
             if (e->smart && (e->turn ^= 1)) {
                 
                 // if we enter a region around the player, attempt to guide them
-                if (chk_collision(PLAYER_POS - 60, PLAYER_POS - 60, 136, 136, x, y, 16, 16)) {
+                //if (chk_collision(PLAYER_POS - 55, PLAYER_POS - 55, 126, 126, x, y, 16, 16))
+                {
                     uint8_t index = e->index;
                     bool testx = rand() & 1;
                     
@@ -124,7 +125,7 @@ void update_screen(void) {
                 }
             }
             
-            if (0 && chk_collision_player(x + 2, y + 2, 12, 12)) {
+            if (chk_collision_player(x + 2, y + 2, 12, 12)) {
                 mplayer.failed = true;
                 mplayer.index = 0;
                 e->destroy_index = 1;
@@ -134,7 +135,7 @@ void update_screen(void) {
         e->y -= mplayer.dy;
         e->x -= mplayer.dx;
         
-        if (x > 300 || y > 300 || x < -60 || y < -60 || destroy) {
+        if (x > 270 || y > 270 || x < -30 || y < -30 || destroy) {
             update_enemy(e);
         }
     }
@@ -144,11 +145,14 @@ void update_screen(void) {
         gfx_RLETSprite(parachute_sprite_current, x = parachute->x, y = parachute->y);
         parachute->y -= mplayer.dy - 1;
         parachute->x -= mplayer.dx;
+        if (parachute->y > 250) {
+            update_parachute(parachute);
+        } else
         if (chk_collision_player(x + 1, y + 1, 14, 14)) {
             if (mplayer.parachute_chain != 5000) {
                 mplayer.parachute_chain += 1000;
             }
-            update_parachute(parachute);
+            parachute->y = 0xfffff;
             update_scores(mplayer.parachute_chain);
         }
     }
