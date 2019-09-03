@@ -10,7 +10,7 @@
 #include <string.h>
 
 #include <tice.h>
-#include <decompress.h>
+#include <compression.h>
 
 #include <graphx.h>
 #include <fileioc.h>
