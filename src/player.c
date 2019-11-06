@@ -33,7 +33,7 @@ void init_player(void) {
 
 void update_player(void) {
     uint8_t index = mplayer.index;
-    
+
     if (mplayer.done) {
         mplayer.index++;
         if (mplayer.index == 20) {
@@ -41,12 +41,12 @@ void update_player(void) {
         }
         return;
     } else
-    
+
     if (mplayer.dx || mplayer.dy) {
         mplayer.dx_save = mplayer.dx;
         mplayer.dy_save = mplayer.dy;
     }
-    
+
     if (mplayer.ctr != 10) {
         if (mplayer.ctr == mplayer.reload) {
             mplayer.dx = mplayer.dx_save;
@@ -75,7 +75,7 @@ void update_player(void) {
         index &= 15;
         mplayer.dx = rdx[index];
         mplayer.dy = rdy[index];
-        
+
         switch (index) {
             case 0:
                 mregion = &spawn_regions[0];
@@ -93,7 +93,7 @@ void update_player(void) {
                 break;
         }
     }
-    
+
     if (mplayer.firing) {
         if (mplayer.ctr_bullet == 0) {
             fire_bullet();
@@ -102,43 +102,43 @@ void update_player(void) {
             mplayer.ctr_bullet--;
         }
     }
-    
+
     mplayer.sprite = player_sprite[index];
     mplayer.index = index;
 }
 
 void update_scores(unsigned int score) {
     uint8_t len;
-    
+
     gfx_SetDrawScreen();
-    
+
     mplayer.score += score;
-    
+
     if (mplayer.score > mgame.high) {
         mgame.high = mplayer.score;
     }
-    
+
     len = log10(mgame.high) + 1;
     gfx_SetTextXY(303 - len * 8, 9);
     gfx_PrintUInt(mgame.high, len);
     len = log10(mplayer.score) + 1;
     gfx_SetTextXY(303 - len * 8, 41);
     gfx_PrintUInt(mplayer.score, len);
-    
+
     gfx_SetDrawBuffer();
 }
 
 void update_progress(void) {
     gfx_SetDrawScreen();
-    
+
     if (mlevel.progress == 56) {
         mlevel.boss_active = true;
     } else {
         mlevel.progress++;
-    
+
         gfx_SetColor(white_color_index);
         gfx_SetPixel(240 + 11 + mlevel.progress, 191);
     }
-    
+
     gfx_SetDrawBuffer();
 }

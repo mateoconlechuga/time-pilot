@@ -18,7 +18,7 @@ extern const uint8_t pdx[];
 extern const uint8_t pdy[];
 extern const uint8_t font[];
 
-extern const spawn_region_t spawn_regions[];
+extern spawn_region_t spawn_regions[];
 
 #define update_global(p) \
     do { p->y -= mplayer.dy; p->x -= mplayer.dx; } while (0)
