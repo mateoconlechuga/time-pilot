@@ -1,33 +1,24 @@
 # ----------------------------
-# Set NAME to the program name
-# Set DEBUGMODE to "DEBUG" to use debug functions
-# Set ICON to the png icon file name
-# Set DESCRIPTION to display within a compatible shell
-# Set COMPRESSED to "YES" to create a compressed program
-# ** Add all shared library names to L **
+# Program Options
 # ----------------------------
 
-NAME        ?= PILOT
-DEBUGMODE   ?= DEBUG
-COMPRESSED  ?= NO
-ICON        ?= icon.png
-DESCRIPTION ?= "Time Pilot v1"
-
-L ?= fileioc keypadc graphx
+NAME         ?= PILOT
+ICON         ?= iconc.png
+DESCRIPTION  ?= "Time Pilot"
+COMPRESSED   ?= YES
+ARCHIVED     ?= NO
 
 # ----------------------------
-# Specify source and output locations
+# Compile Options
 # ----------------------------
 
-SRCDIR ?= src
-OBJDIR ?= obj
-BINDIR ?= bin
-GFXDIR ?= src/gfx
+OPT_MODE     ?= -Oz
+EXTRA_CFLAGS ?= -Wall -Wextra
 
 # ----------------------------
-# Use OS helper functions (Advanced)
+# Debug Options
 # ----------------------------
 
-USE_FLASH_FUNCTIONS ?= YES
+OUTPUT_MAP   ?= NO
 
 include $(CEDEV)/include/.makefile

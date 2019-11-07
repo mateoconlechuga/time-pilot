@@ -29,7 +29,7 @@ const void *cloud_sprite_data[4] = {
     cloud_2_compressed,
     cloud_3_compressed,
 };
-gfx_rletsprite_t **cloud_sprite = cloud_sprite_data;
+gfx_rletsprite_t **cloud_sprite = (gfx_rletsprite_t**)cloud_sprite_data;
 
 // ---------------------------------------------------
 
@@ -45,7 +45,7 @@ const void *asteroid_sprite_data[4] = {
     asteroid_2_compressed,
     asteroid_3_compressed,
 };
-gfx_rletsprite_t **asteroid_sprite = asteroid_sprite_data;
+gfx_rletsprite_t **asteroid_sprite = (gfx_rletsprite_t**)asteroid_sprite_data;
 
 // ---------------------------------------------------
 
@@ -63,7 +63,7 @@ const void *player_explosion_sprite_data[5] = {
     player_explosion_3_compressed,
     player_explosion_4_compressed,
 };
-gfx_rletsprite_t **player_explosion_sprite = player_explosion_sprite_data;
+gfx_rletsprite_t **player_explosion_sprite = (gfx_rletsprite_t**)player_explosion_sprite_data;
 
 // ---------------------------------------------------
 
@@ -81,7 +81,7 @@ const void *enemy_explosion_sprite_data[5] = {
     enemy_explosion_3_compressed,
     enemy_explosion_4_compressed,
 };
-gfx_rletsprite_t **enemy_explosion_sprite = enemy_explosion_sprite_data;
+gfx_rletsprite_t **enemy_explosion_sprite = (gfx_rletsprite_t**)enemy_explosion_sprite_data;
 
 // ---------------------------------------------------
 
@@ -92,7 +92,7 @@ const void *parachute_sprite_data[5] = {
     parachute_3_compressed,
     parachute_4_compressed,
 };
-gfx_rletsprite_t **parachute_sprite = parachute_sprite_data;
+gfx_rletsprite_t **parachute_sprite = (gfx_rletsprite_t**)parachute_sprite_data;
 #define parachute_sprite_size ((parachute_1_width+1)*parachute_1_height)
 
 // ---------------------------------------------------
@@ -116,37 +116,37 @@ const void *player_sprite_data[17] = {
     player_15_compressed,
     player_16_compressed
 };
-gfx_rletsprite_t **player_sprite = player_sprite_data;
+gfx_rletsprite_t **player_sprite = (gfx_rletsprite_t**)player_sprite_data;
 #define player_sprite_size (player_1_width*player_1_height)
 
 // ---------------------------------------------------
 
-static void *decompress(void *loc, unsigned int size) {
+static void *decompress(const void *loc, unsigned int size) {
     void *sprite_data = malloc(size);
-    dzx7_Standard(loc, sprite_data);
+    zx7_Decompress(sprite_data, (void*)loc);
     return sprite_data;
 }
 
 void malloc_static_images(void) {
     uint8_t i;
-    
+
     // decompress player sprite data
     for (i = 1; i < 17; i++) {
         player_sprite[i-1] = decompress(player_sprite_data[i], player_sprite_size);
     }
-    
+
     // decompress cloud sprite data
     for (i = 1; i < 4; i++) {
         uint8_t j = i-1;
-        
+
         cloud_sprite[j] = decompress(cloud_sprite_data[i], cloud_sizes[i]);
         asteroid_sprite[j] = decompress(asteroid_sprite_data[i], asteroid_sizes[i]);
     }
-    
+
     // decompress parachute/explosion sprite data
     for (i = 1; i < 5; i++) {
         uint8_t j = i-1;
-        
+
         parachute_sprite[j] = decompress(parachute_sprite_data[i], parachute_sprite_size);
         player_explosion_sprite[j] = decompress(player_explosion_sprite_data[i], player_explosion_sizes[i]);
         enemy_explosion_sprite[j] = decompress(enemy_explosion_sprite_data[i], enemy_explosion_sizes[i]);
@@ -283,25 +283,24 @@ const void *boss_level5_sprite_data[4] = {
 // ---------------------------------------------------
 
 void *enemy_sprite_data[16];
-gfx_rletsprite_t **enemy_sprite = enemy_sprite_data;
+gfx_rletsprite_t **enemy_sprite = (gfx_rletsprite_t**)enemy_sprite_data;
 
 void *boss_sprite_data[6];
-gfx_rletsprite_t **boss_sprite = boss_sprite_data;
+gfx_rletsprite_t **boss_sprite = (gfx_rletsprite_t**)boss_sprite_data;
 
 void malloc_level_images(uint8_t level) {
-    void *sprite_data;
     uint8_t i = 0;
     uint8_t j = 0;
-    
+
 #define decompress_enemy(num, index) \
     enemy_sprite[index] = decompress(enemy_level##num##_sprite_data[i], enemy_level##num##_size)
 
 #define decompress_boss(num, index) \
     boss_sprite[index] = decompress(boss_level##num##_sprite_data[i], boss_level##num##_size)
-    
+
     mlevel.num_enemy_sprites = 16;
     mlevel.num_boss_sprites = 4;
-    
+
     switch (level) {
         case 1:
             for (; i < 16; i++) {
@@ -347,7 +346,7 @@ void malloc_level_images(uint8_t level) {
             mlevel.num_enemy_sprites = 1;
             break;
     }
-    
+
 #undef decompress_boss
 #undef decompress_enemy
 }
@@ -356,7 +355,7 @@ void malloc_level_images(uint8_t level) {
 void free_level_images(void) {
     uint8_t i = 0;
     uint8_t j = 0;
-    
+
     for (; i < mlevel.num_enemy_sprites; i++) {
         free(enemy_sprite[i]);
     }
